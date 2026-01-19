@@ -27,6 +27,7 @@ struct HelpCommand: ParsableCommand {
         OutputFormatter.info("  --volume-lock <bool>      Enable/disable volume enforcement\n")
         OutputFormatter.info("Examples:")
         OutputFormatter.info("  macrack status")
+        OutputFormatter.info("  macrack status --verbose")
         OutputFormatter.info("  macrack config --interval 60")
         OutputFormatter.info("  macrack logs -f\n")
         OutputFormatter.info("Documentation: https://github.com/851-labs/macrack")
