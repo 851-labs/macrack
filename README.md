@@ -6,6 +6,7 @@ Keep a Mac "server-ready" by preventing sleep, forcing zero brightness, and muti
 
 - **Auto-login enabled:** System Settings → Users & Groups → Automatic Login
 - **FileVault disabled:** required for auto-login to work
+- **Disable lock on display sleep:** System Settings → Lock Screen → Require password after screen saver begins or display is turned off → Never
 
 Without auto-login, the Launch Agent won’t start until someone logs in.
 
