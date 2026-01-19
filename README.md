@@ -49,6 +49,7 @@ Defaults:
 {
   "brightnessLockEnabled": true,
   "volumeLockEnabled": true,
+  "keyboardBacklightLockEnabled": true,
   "checkIntervalSeconds": 30,
   "autoPauseEnabled": true,
   "autoPauseIdleThresholdSeconds": 300
@@ -73,8 +74,8 @@ If you installed via Homebrew services on Apple Silicon, the log may live at:
 
 The Launch Agent runs `macrack agent` and:
 
-- Spawns `caffeinate -s`
-- Enforces brightness and volume every interval
+- Spawns `caffeinate -s -d -i -u`
+- Enforces brightness, keyboard backlight, and volume every interval
 - Pauses enforcement when user activity is detected
 - Reloads configuration on `SIGHUP`
 

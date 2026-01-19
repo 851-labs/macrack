@@ -21,10 +21,13 @@ struct ConfigCommand: ParsableCommand {
     @Option(name: .long, help: "Enable or disable volume enforcement")
     var volumeLock: Bool?
 
+    @Option(name: .long, help: "Enable or disable keyboard backlight enforcement")
+    var keyboardBacklightLock: Bool?
+
     func run() throws {
         let loaded = Configuration.load()
         var config = loaded.config
-        let hasChanges = interval != nil || idleThreshold != nil || autoPause != nil || brightnessLock != nil || volumeLock != nil
+        let hasChanges = interval != nil || idleThreshold != nil || autoPause != nil || brightnessLock != nil || volumeLock != nil || keyboardBacklightLock != nil
 
         if !hasChanges {
             if !loaded.exists {
@@ -51,6 +54,9 @@ struct ConfigCommand: ParsableCommand {
         if let volumeLock {
             config.volumeLockEnabled = volumeLock
         }
+        if let keyboardBacklightLock {
+            config.keyboardBacklightLockEnabled = keyboardBacklightLock
+        }
 
         try config.save()
         _ = AgentSignaler.reloadConfig()
@@ -63,6 +69,7 @@ struct ConfigCommand: ParsableCommand {
         let labels = [
             "Brightness Locked:",
             "Volume Locked:",
+            "Keyboard Backlight Locked:",
             "Interval:",
             "Auto-pause:"
         ]
@@ -70,6 +77,7 @@ struct ConfigCommand: ParsableCommand {
 
         OutputFormatter.line(label: "Brightness Locked:", value: config.brightnessLockEnabled ? "true" : "false", width: width)
         OutputFormatter.line(label: "Volume Locked:", value: config.volumeLockEnabled ? "true" : "false", width: width)
+        OutputFormatter.line(label: "Keyboard Backlight Locked:", value: config.keyboardBacklightLockEnabled ? "true" : "false", width: width)
         OutputFormatter.line(label: "Interval:", value: "\(config.checkIntervalSeconds)s", width: width)
         let autoPauseValue = config.autoPauseEnabled ? "enabled" : "disabled"
         OutputFormatter.line(label: "Auto-pause:", value: "\(autoPauseValue) (\(config.autoPauseIdleThresholdSeconds)s)", width: width)

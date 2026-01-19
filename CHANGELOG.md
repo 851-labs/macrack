@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.14 - 2026-01-19
+- Add keyboard backlight enforcement.
+
+## 0.1.13 - 2026-01-19
+- Keep user session awake with `caffeinate -s -d -i -u`.
+
 ## 0.1.12 - 2026-01-19
 - Prevent display sleep by running `caffeinate -s -d`.
 

@@ -13,7 +13,7 @@ struct StatusCommand: ParsableCommand {
     func run() throws {
         OutputFormatter.header("MacRack Status")
 
-        let labels = ["Agent:", "Sleep:", "Brightness:", "Volume:", "Uptime:"]
+        let labels = ["Agent:", "Sleep:", "Brightness:", "Keyboard Backlight:", "Volume:", "Uptime:"]
         let width = max(12, labels.map { $0.count }.max() ?? 12)
 
         switch LaunchctlService.status() {
@@ -47,13 +47,16 @@ struct StatusCommand: ParsableCommand {
         }
 
         let brightnessValue = status?.brightnessPercent.map { Int($0.rounded()) }
+        let keyboardBacklightValue = status?.keyboardBacklightPercent.map { Int($0.rounded()) }
         let volumeValue = status?.volumePercent
         let mutedValue = status?.isMuted
 
         if paused {
             let brightnessText = brightnessValue.map { "\($0)%" } ?? "unknown"
+            let keyboardText = keyboardBacklightValue.map { "\($0)%" } ?? "unknown"
             let volumeText = volumeValue.map { "\($0)%" } ?? "unknown"
             OutputFormatter.line(label: "Brightness:", value: "\(brightnessText) (paused — user active)", width: width)
+            OutputFormatter.line(label: "Keyboard Backlight:", value: "\(keyboardText) (paused — user active)", width: width)
             OutputFormatter.line(label: "Volume:", value: "\(volumeText) (paused — user active)", width: width)
         } else {
             if let brightnessValue {
@@ -63,6 +66,15 @@ struct StatusCommand: ParsableCommand {
                 OutputFormatter.line(label: "Brightness:", value: OutputFormatter.statusValue(value, ok: brightnessOk), width: width)
             } else {
                 OutputFormatter.line(label: "Brightness:", value: OutputFormatter.statusValue("unknown", ok: false), width: width)
+            }
+
+            if let keyboardBacklightValue {
+                let keyboardText = "\(keyboardBacklightValue)%"
+                let keyboardOk = keyboardBacklightValue == 0 || !config.keyboardBacklightLockEnabled
+                let value = keyboardOk ? "\(keyboardText) ✓" : "\(keyboardText) ✗"
+                OutputFormatter.line(label: "Keyboard Backlight:", value: OutputFormatter.statusValue(value, ok: keyboardOk), width: width)
+            } else {
+                OutputFormatter.line(label: "Keyboard Backlight:", value: OutputFormatter.statusValue("unknown", ok: false), width: width)
             }
 
             if let volumeValue {
@@ -80,7 +92,7 @@ struct StatusCommand: ParsableCommand {
         }
 
         if paused {
-            OutputFormatter.info("\nBrightness and volume paused — user activity detected.")
+            OutputFormatter.info("\nBrightness, keyboard backlight, and volume paused — user activity detected.")
             if config.autoPauseEnabled {
                 let thresholdMinutes = max(1, config.autoPauseIdleThresholdSeconds / 60)
                 OutputFormatter.info("Will resume after \(thresholdMinutes)m of idle time.")
@@ -98,6 +110,9 @@ struct StatusCommand: ParsableCommand {
     private func hasIssues(status: AgentStatus?, config: Configuration) -> Bool {
         guard let status else { return true }
         if config.brightnessLockEnabled, let brightness = status.brightnessPercent, brightness > 0.5 {
+            return true
+        }
+        if config.keyboardBacklightLockEnabled, let keyboard = status.keyboardBacklightPercent, keyboard > 0.5 {
             return true
         }
         if config.volumeLockEnabled {

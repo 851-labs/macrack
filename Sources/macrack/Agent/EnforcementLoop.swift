@@ -6,6 +6,7 @@ final class MacrackAgent {
     private let logger: Logger
     private let sleepPrevention = SleepPrevention()
     private let brightnessController: BrightnessController?
+    private let keyboardBacklightController = KeyboardBacklightController()
     private let volumeController = VolumeController()
     private let activityMonitor = ActivityMonitor()
     private let startTime = Date()
@@ -62,6 +63,7 @@ final class MacrackAgent {
             }
 
             var currentBrightness = brightnessController?.currentBrightnessPercent()
+            var currentKeyboardBacklight = keyboardBacklightController.currentBrightnessPercent()
             var currentVolume = volumeController.currentVolume()
             var currentMuted = volumeController.isMuted()
 
@@ -84,6 +86,18 @@ final class MacrackAgent {
                         }
                     }
                 }
+
+                if config.keyboardBacklightLockEnabled {
+                    if let currentLevel = currentKeyboardBacklight {
+                        if currentLevel > 0.5, keyboardBacklightController.setBrightness(percent: 0) {
+                            logger.info("Keyboard backlight set to 0% (was \(Int(currentLevel)))")
+                            currentKeyboardBacklight = 0
+                        }
+                    } else if keyboardBacklightController.setBrightness(percent: 0) {
+                        logger.info("Keyboard backlight set to 0%")
+                        currentKeyboardBacklight = 0
+                    }
+                }
             }
 
             let status = AgentStatus(
@@ -92,6 +106,7 @@ final class MacrackAgent {
                 agentPid: getpid(),
                 caffeinatePid: caffeinatePid,
                 brightnessPercent: currentBrightness,
+                keyboardBacklightPercent: currentKeyboardBacklight,
                 volumePercent: currentVolume,
                 isMuted: currentMuted,
                 isPaused: isPaused,

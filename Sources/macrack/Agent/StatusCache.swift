@@ -6,6 +6,7 @@ struct AgentStatus: Codable {
     let agentPid: Int32
     let caffeinatePid: Int32?
     let brightnessPercent: Double?
+    let keyboardBacklightPercent: Double?
     let volumePercent: Int?
     let isMuted: Bool?
     let isPaused: Bool
