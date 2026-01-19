@@ -29,7 +29,7 @@ struct ConfigCommand: ParsableCommand {
         if !hasChanges {
             if !loaded.exists {
                 OutputFormatter.info("No config file found. Using defaults.")
-                OutputFormatter.info("Run `macrack config --interval 30` to create one.")
+                OutputFormatter.info("Run `macrack config --interval 30` to create one.\n")
             }
             OutputFormatter.header("MacRack Configuration")
             printConfig(config)
