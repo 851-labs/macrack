@@ -8,7 +8,8 @@ struct OutputFormatter {
     }
 
     static func line(label: String, value: String) {
-        let padded = label.padding(toLength: 12, withPad: " ", startingAt: 0)
+        let width = max(12, label.count)
+        let padded = label.padding(toLength: width, withPad: " ", startingAt: 0)
         print("\(padded) \(value)")
     }
 
