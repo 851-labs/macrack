@@ -10,7 +10,7 @@
   </a>
   <img src="https://img.shields.io/badge/Swift-6.2-f05138?logo=swift&logoColor=white&style=flat" alt="Swift 6.2">
   <a href="https://github.com/851-labs/macrack/releases/latest">
-    <img src="https://img.shields.io/github/v/release/851-labs/macrack?style=flat" alt="Latest release">
+    <img src="https://img.shields.io/github/v/release/851-labs/macrack?label=Release&style=flat" alt="Latest Release">
   </a>
   <a href="https://github.com/851-labs/homebrew-tap">
     <img src="https://img.shields.io/badge/Homebrew-851--labs%2Ftap-fbb040?logo=homebrew&logoColor=white&style=flat" alt="Homebrew tap">
