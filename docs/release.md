@@ -68,12 +68,20 @@ git push
 
 ### 6) Validate Install
 
+If validating on your local (non-rack) machine, make sure to stop the service after the check. On a rack-mounted host, it’s fine (recommended) to leave the service running.
+
 ```
 brew update
 brew upgrade macrack
 brew services restart macrack
 macrack version
 macrack status
+```
+
+Local machine cleanup:
+
+```
+brew services stop macrack
 ```
 
 ## Notes
