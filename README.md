@@ -92,3 +92,19 @@ The Launch Agent runs `macrack agent` and:
 swift build
 swift run macrack status
 ```
+
+## Tech Stack
+
+- [OpenCode](https://opencode.ai/) - AI Coding Agent
+- [Swift 6.2](https://www.swift.org/)
+- [Swift Argument Parser](https://github.com/apple/swift-argument-parser) - CLI Framework
+- [Rainbow](https://github.com/onevcat/Rainbow) - Terminal colors
+- [swift-log](https://github.com/apple/swift-log) - Logging
+
+## License
+
+This project is released under the MIT License. See [LICENSE](LICENSE) for details.
+
+## Support
+
+If you like this project, please consider giving it a star.
