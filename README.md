@@ -13,7 +13,7 @@
     <img src="https://img.shields.io/badge/Homebrew-851--labs%2Ftap-fbb040?logo=homebrew&logoColor=white&style=flat" alt="Homebrew tap">
   </a>
   <a href="https://github.com/851-labs/macrack/releases/latest">
-    <img src="https://img.shields.io/github/downloads/851-labs/macrack/total?label=downloads&style=flat" alt="Downloads total">
+    <img src="https://img.shields.io/github/v/release/851-labs/macrack?style=flat" alt="Latest release">
   </a>
 </div>
 
