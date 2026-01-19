@@ -70,6 +70,12 @@ Homebrew log path:
 ~/Library/Logs/Homebrew/macrack.log
 ```
 
+If you installed via Homebrew services on Apple Silicon, the log may live at:
+
+```
+/opt/homebrew/var/log/macrack.log
+```
+
 ## Agent
 
 The Launch Agent runs `macrack agent` and:

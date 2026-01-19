@@ -39,17 +39,27 @@ struct StatusCommand: ParsableCommand {
         let volumeValue = status?.volumePercent
         let mutedValue = status?.isMuted
 
-        let brightnessText = brightnessValue.map { "\($0)%" } ?? "unknown"
-        let volumeText = volumeValue.map { "\($0)%" } ?? "unknown"
-
         if paused {
+            let brightnessText = brightnessValue.map { "\($0)%" } ?? "unknown"
+            let volumeText = volumeValue.map { "\($0)%" } ?? "unknown"
             OutputFormatter.line(label: "Brightness:", value: "\(brightnessText) (paused — user active)")
             OutputFormatter.line(label: "Volume:", value: "\(volumeText) (paused — user active)")
         } else {
-            let brightnessOk = brightnessValue == 0 || !config.brightnessLockEnabled
-            let volumeOk = (volumeValue == 0 || mutedValue == true) || !config.volumeLockEnabled
-            OutputFormatter.line(label: "Brightness:", value: brightnessOk ? "\(brightnessText) ✓" : "\(brightnessText) ✗")
-            OutputFormatter.line(label: "Volume:", value: volumeOk ? "\(volumeText) ✓" : "\(volumeText) ✗")
+            if let brightnessValue {
+                let brightnessText = "\(brightnessValue)%"
+                let brightnessOk = brightnessValue == 0 || !config.brightnessLockEnabled
+                OutputFormatter.line(label: "Brightness:", value: brightnessOk ? "\(brightnessText) ✓" : "\(brightnessText) ✗")
+            } else {
+                OutputFormatter.line(label: "Brightness:", value: "unknown")
+            }
+
+            if let volumeValue {
+                let volumeText = "\(volumeValue)%"
+                let volumeOk = (volumeValue == 0 || mutedValue == true) || !config.volumeLockEnabled
+                OutputFormatter.line(label: "Volume:", value: volumeOk ? "\(volumeText) ✓" : "\(volumeText) ✗")
+            } else {
+                OutputFormatter.line(label: "Volume:", value: "unknown")
+            }
         }
 
         if let startTime = status?.startTime {
