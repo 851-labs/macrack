@@ -15,6 +15,12 @@
   <a href="https://github.com/851-labs/macrack/releases/latest">
     <img src="https://img.shields.io/github/v/release/851-labs/macrack?style=flat" alt="Latest release">
   </a>
+  <a href="https://deepwiki.com/851-labs/macrack">
+    <img src="https://img.shields.io/badge/DeepWiki-Docs-4b32c3?style=flat" alt="DeepWiki">
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-blue?style=flat" alt="MIT License">
+  </a>
 </div>
 
 ## Prerequisites
