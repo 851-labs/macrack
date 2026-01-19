@@ -30,8 +30,8 @@ struct StatusCommand: ParsableCommand {
         let paused = status?.isPaused ?? false
 
         if let caffeinatePid = status?.caffeinatePid {
-            let sleepText = "prevented ✓ (caffeinate active, PID \(caffeinatePid))"
-            OutputFormatter.line(label: "Sleep:", value: OutputFormatter.statusValue(sleepText, ok: true))
+            let sleepValue = OutputFormatter.statusValue("prevented ✓", ok: true)
+            OutputFormatter.line(label: "Sleep:", value: "\(sleepValue) (caffeinate active, PID \(caffeinatePid))")
         } else {
             OutputFormatter.line(label: "Sleep:", value: OutputFormatter.statusValue("unknown", ok: false))
         }
