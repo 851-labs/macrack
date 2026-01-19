@@ -28,6 +28,12 @@ git commit -m "chore: bump version to x.y.z"
 
 Add the release notes to `CHANGELOG.md` under a new version heading.
 
+To see commits since the previous tag:
+
+```
+git log $(git describe --tags --abbrev=0)..HEAD --oneline
+```
+
 ```
 git add CHANGELOG.md
 git commit -m "docs: update changelog for x.y.z"
