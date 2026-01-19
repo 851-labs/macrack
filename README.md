@@ -18,20 +18,11 @@ brew services start macrack
 
 ## Usage
 
-```bash
-macrack status
-macrack config
-macrack config --interval 60
-macrack logs -n 50
-macrack logs -f
-macrack version
-```
-
-## Commands
-
 - `macrack status` — Show current system state
 - `macrack config` — Show or update configuration
-- `macrack logs` — Show agent logs
+- `macrack config --interval 60` — Set the check interval to 60 seconds
+- `macrack logs -n 50` — Show the last 50 log lines
+- `macrack logs -f` — Follow log output
 - `macrack version` — Show version info
 
 Service management (via Homebrew):
