@@ -60,10 +60,18 @@ struct ConfigCommand: ParsableCommand {
     }
 
     private func printConfig(_ config: Configuration) {
-        OutputFormatter.line(label: "Brightness Locked:", value: config.brightnessLockEnabled ? "true" : "false")
-        OutputFormatter.line(label: "Volume Locked:", value: config.volumeLockEnabled ? "true" : "false")
-        OutputFormatter.line(label: "Interval:", value: "\(config.checkIntervalSeconds)s")
+        let labels = [
+            "Brightness Locked:",
+            "Volume Locked:",
+            "Interval:",
+            "Auto-pause:"
+        ]
+        let width = max(12, labels.map { $0.count }.max() ?? 12)
+
+        OutputFormatter.line(label: "Brightness Locked:", value: config.brightnessLockEnabled ? "true" : "false", width: width)
+        OutputFormatter.line(label: "Volume Locked:", value: config.volumeLockEnabled ? "true" : "false", width: width)
+        OutputFormatter.line(label: "Interval:", value: "\(config.checkIntervalSeconds)s", width: width)
         let autoPauseValue = config.autoPauseEnabled ? "enabled" : "disabled"
-        OutputFormatter.line(label: "Auto-pause:", value: "\(autoPauseValue) (\(config.autoPauseIdleThresholdSeconds)s)")
+        OutputFormatter.line(label: "Auto-pause:", value: "\(autoPauseValue) (\(config.autoPauseIdleThresholdSeconds)s)", width: width)
     }
 }

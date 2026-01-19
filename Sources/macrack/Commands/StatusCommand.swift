@@ -13,19 +13,22 @@ struct StatusCommand: ParsableCommand {
     func run() throws {
         OutputFormatter.header("MacRack Status")
 
+        let labels = ["Agent:", "Sleep:", "Brightness:", "Volume:", "Uptime:"]
+        let width = max(12, labels.map { $0.count }.max() ?? 12)
+
         switch LaunchctlService.status() {
         case .notRunning:
-            OutputFormatter.line(label: "Agent:", value: OutputFormatter.statusValue("not running ✗", ok: false))
+            OutputFormatter.line(label: "Agent:", value: OutputFormatter.statusValue("not running ✗", ok: false), width: width)
             OutputFormatter.info("\nStart with: brew services start macrack")
             throw ExitCode.failure
         case .error(let message):
-            OutputFormatter.line(label: "Agent:", value: OutputFormatter.statusValue("error ✗", ok: false))
+            OutputFormatter.line(label: "Agent:", value: OutputFormatter.statusValue("error ✗", ok: false), width: width)
             if !message.isEmpty {
                 OutputFormatter.info("\n\(message)")
             }
             throw ExitCode.failure
         case .running:
-            OutputFormatter.line(label: "Agent:", value: OutputFormatter.statusValue("running ✓", ok: true))
+            OutputFormatter.line(label: "Agent:", value: OutputFormatter.statusValue("running ✓", ok: true), width: width)
         }
 
         let status = StatusCacheStore.load()
@@ -35,12 +38,12 @@ struct StatusCommand: ParsableCommand {
         if let caffeinatePid = status?.caffeinatePid {
             let sleepValue = OutputFormatter.statusValue("prevented ✓", ok: true)
             if verbose {
-                OutputFormatter.line(label: "Sleep:", value: "\(sleepValue) (caffeinate active, PID \(caffeinatePid))")
+                OutputFormatter.line(label: "Sleep:", value: "\(sleepValue) (caffeinate active, PID \(caffeinatePid))", width: width)
             } else {
-                OutputFormatter.line(label: "Sleep:", value: sleepValue)
+                OutputFormatter.line(label: "Sleep:", value: sleepValue, width: width)
             }
         } else {
-            OutputFormatter.line(label: "Sleep:", value: OutputFormatter.statusValue("unknown", ok: false))
+            OutputFormatter.line(label: "Sleep:", value: OutputFormatter.statusValue("unknown", ok: false), width: width)
         }
 
         let brightnessValue = status?.brightnessPercent.map { Int($0.rounded()) }
@@ -50,30 +53,30 @@ struct StatusCommand: ParsableCommand {
         if paused {
             let brightnessText = brightnessValue.map { "\($0)%" } ?? "unknown"
             let volumeText = volumeValue.map { "\($0)%" } ?? "unknown"
-            OutputFormatter.line(label: "Brightness:", value: "\(brightnessText) (paused — user active)")
-            OutputFormatter.line(label: "Volume:", value: "\(volumeText) (paused — user active)")
+            OutputFormatter.line(label: "Brightness:", value: "\(brightnessText) (paused — user active)", width: width)
+            OutputFormatter.line(label: "Volume:", value: "\(volumeText) (paused — user active)", width: width)
         } else {
             if let brightnessValue {
                 let brightnessText = "\(brightnessValue)%"
                 let brightnessOk = brightnessValue == 0 || !config.brightnessLockEnabled
                 let value = brightnessOk ? "\(brightnessText) ✓" : "\(brightnessText) ✗"
-                OutputFormatter.line(label: "Brightness:", value: OutputFormatter.statusValue(value, ok: brightnessOk))
+                OutputFormatter.line(label: "Brightness:", value: OutputFormatter.statusValue(value, ok: brightnessOk), width: width)
             } else {
-                OutputFormatter.line(label: "Brightness:", value: OutputFormatter.statusValue("unknown", ok: false))
+                OutputFormatter.line(label: "Brightness:", value: OutputFormatter.statusValue("unknown", ok: false), width: width)
             }
 
             if let volumeValue {
                 let volumeText = "\(volumeValue)%"
                 let volumeOk = (volumeValue == 0 || mutedValue == true) || !config.volumeLockEnabled
                 let value = volumeOk ? "\(volumeText) ✓" : "\(volumeText) ✗"
-                OutputFormatter.line(label: "Volume:", value: OutputFormatter.statusValue(value, ok: volumeOk))
+                OutputFormatter.line(label: "Volume:", value: OutputFormatter.statusValue(value, ok: volumeOk), width: width)
             } else {
-                OutputFormatter.line(label: "Volume:", value: OutputFormatter.statusValue("unknown", ok: false))
+                OutputFormatter.line(label: "Volume:", value: OutputFormatter.statusValue("unknown", ok: false), width: width)
             }
         }
 
         if let startTime = status?.startTime {
-            OutputFormatter.line(label: "Uptime:", value: formatUptime(since: startTime))
+            OutputFormatter.line(label: "Uptime:", value: formatUptime(since: startTime), width: width)
         }
 
         if paused {
