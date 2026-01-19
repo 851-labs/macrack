@@ -24,7 +24,16 @@ git add Sources/macrack/MacrackVersion.swift
 git commit -m "chore: bump version to x.y.z"
 ```
 
-### 2) Tag and Push
+### 2) Update Changelog
+
+Add the release notes to `CHANGELOG.md` under a new version heading.
+
+```
+git add CHANGELOG.md
+git commit -m "docs: update changelog for x.y.z"
+```
+
+### 3) Tag and Push
 
 Create the tag and push it:
 
@@ -33,13 +42,13 @@ git tag vX.Y.Z
 git push origin vX.Y.Z
 ```
 
-### 3) Create GitHub Release
+### 4) Create GitHub Release
 
 ```
 gh release create vX.Y.Z --title "vX.Y.Z" --notes "<summary>"
 ```
 
-### 4) Compute SHA256
+### 5) Compute SHA256
 
 Download the tag tarball and compute the checksum:
 
@@ -48,7 +57,7 @@ curl -L "https://github.com/851-labs/macrack/archive/refs/tags/vX.Y.Z.tar.gz" -o
 shasum -a 256 "/tmp/macrack-vX.Y.Z.tar.gz"
 ```
 
-### 5) Update Homebrew Tap
+### 6) Update Homebrew Tap
 
 Edit `homebrew-tap/Formula/macrack.rb`:
 
@@ -66,7 +75,7 @@ git commit -m "chore: bump macrack to X.Y.Z"
 git push
 ```
 
-### 6) Validate Install
+### 7) Validate Install
 
 If validating on your local (non-rack) machine, make sure to stop the service after the check. On a rack-mounted host, it’s fine (recommended) to leave the service running.
 
