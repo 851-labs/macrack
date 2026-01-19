@@ -6,7 +6,7 @@
 
 <div align="center">
   <a href="https://github.com/851-labs/macrack/releases/latest">
-    <img src="https://img.shields.io/badge/macOS-13%2B-blue?logo=apple&logoColor=white&style=flat" alt="macOS 13+">
+    <img src="https://img.shields.io/badge/macOS-13.0%2B-blue?logo=apple&logoColor=white&style=flat" alt="macOS 13.0+">
   </a>
   <img src="https://img.shields.io/badge/Swift-6.2-f05138?logo=swift&logoColor=white&style=flat" alt="Swift 6.2">
   <a href="https://github.com/851-labs/homebrew-tap">
