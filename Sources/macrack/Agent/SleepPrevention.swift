@@ -9,7 +9,7 @@ final class SleepPrevention {
         }
         let newProcess = Process()
         newProcess.executableURL = URL(fileURLWithPath: "/usr/bin/caffeinate")
-        newProcess.arguments = ["-s"]
+        newProcess.arguments = ["-s", "-d"]
         do {
             try newProcess.run()
             process = newProcess
