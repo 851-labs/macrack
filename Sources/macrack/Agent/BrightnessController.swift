@@ -1,26 +1,38 @@
 import CoreGraphics
+import Darwin
 import Foundation
 import IOKit
 import IOKit.graphics
 
 final class BrightnessController {
     private enum Backend {
+        case displayServices
         case appleArmBacklight
         case coreDisplay
     }
 
     private let backend: Backend
+    private let displayServices: DisplayServices?
     private let coreDisplay: CoreDisplay?
 
     init?() {
+        if let displayServices = DisplayServices() {
+            backend = .displayServices
+            self.displayServices = displayServices
+            coreDisplay = nil
+            return
+        }
+
         if AppleARMBacklight.hasServices {
             backend = .appleArmBacklight
+            displayServices = nil
             coreDisplay = nil
             return
         }
 
         if let coreDisplay = CoreDisplay() {
             backend = .coreDisplay
+            displayServices = nil
             self.coreDisplay = coreDisplay
             return
         }
@@ -30,6 +42,11 @@ final class BrightnessController {
 
     func currentBrightnessPercent() -> Double? {
         switch backend {
+        case .displayServices:
+            guard let displayServices else { return nil }
+            let display = CGMainDisplayID()
+            guard let value = displayServices.getBrightness(displayID: display) else { return nil }
+            return max(0, min(1, Double(value))) * 100
         case .appleArmBacklight:
             return AppleARMBacklight.currentBrightnessPercent()
         case .coreDisplay:
@@ -46,6 +63,10 @@ final class BrightnessController {
     func setBrightness(percent: Double) -> Bool {
         let clamped = max(0, min(100, percent))
         switch backend {
+        case .displayServices:
+            guard let displayServices else { return false }
+            let normalized = Float(clamped / 100)
+            return displayServices.setBrightness(displayID: CGMainDisplayID(), brightness: normalized)
         case .appleArmBacklight:
             return AppleARMBacklight.setBrightnessPercent(clamped)
         case .coreDisplay:
@@ -61,6 +82,37 @@ final class BrightnessController {
             }
             return success
         }
+    }
+}
+
+private struct DisplayServices {
+    typealias SetBrightness = @convention(c) (CGDirectDisplayID, Float) -> Int32
+    typealias GetBrightness = @convention(c) (CGDirectDisplayID, UnsafeMutablePointer<Float>) -> Int32
+
+    private let setBrightnessPtr: SetBrightness
+    private let getBrightnessPtr: GetBrightness
+
+    init?() {
+        let handle = dlopen("/System/Library/PrivateFrameworks/DisplayServices.framework/DisplayServices", RTLD_LAZY)
+        guard handle != nil else { return nil }
+        guard
+            let setSymbol = dlsym(handle, "DisplayServicesSetBrightness"),
+            let getSymbol = dlsym(handle, "DisplayServicesGetBrightness")
+        else {
+            return nil
+        }
+        setBrightnessPtr = unsafeBitCast(setSymbol, to: SetBrightness.self)
+        getBrightnessPtr = unsafeBitCast(getSymbol, to: GetBrightness.self)
+    }
+
+    func setBrightness(displayID: CGDirectDisplayID, brightness: Float) -> Bool {
+        setBrightnessPtr(displayID, brightness) == 0
+    }
+
+    func getBrightness(displayID: CGDirectDisplayID) -> Float? {
+        var value: Float = 0
+        let result = getBrightnessPtr(displayID, &value)
+        return result == 0 ? value : nil
     }
 }
 
