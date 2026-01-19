@@ -7,7 +7,7 @@ struct LogsCommand: ParsableCommand {
         abstract: "Show agent logs"
     )
 
-    @Option(name: .shortAndLong, help: "Number of lines to show")
+    @Option(name: [.customShort("n"), .long], help: "Number of lines to show")
     var lines: Int = 20
 
     @Flag(name: .shortAndLong, help: "Follow logs")
