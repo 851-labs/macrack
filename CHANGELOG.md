@@ -1,7 +1,5 @@
 # Changelog
 
-All notable changes to MacRack will be documented in this file.
-
 ## 0.1.12 - 2026-01-19
 - Prevent display sleep by running `caffeinate -s -d`.
 
