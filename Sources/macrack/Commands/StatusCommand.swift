@@ -30,9 +30,10 @@ struct StatusCommand: ParsableCommand {
         let paused = status?.isPaused ?? false
 
         if let caffeinatePid = status?.caffeinatePid {
-            OutputFormatter.line(label: "Sleep:", value: "prevented ✓ (caffeinate active, PID \(caffeinatePid))")
+            let sleepText = "prevented ✓ (caffeinate active, PID \(caffeinatePid))"
+            OutputFormatter.line(label: "Sleep:", value: OutputFormatter.statusValue(sleepText, ok: true))
         } else {
-            OutputFormatter.line(label: "Sleep:", value: "unknown")
+            OutputFormatter.line(label: "Sleep:", value: OutputFormatter.statusValue("unknown", ok: false))
         }
 
         let brightnessValue = status?.brightnessPercent.map { Int($0.rounded()) }
@@ -48,17 +49,19 @@ struct StatusCommand: ParsableCommand {
             if let brightnessValue {
                 let brightnessText = "\(brightnessValue)%"
                 let brightnessOk = brightnessValue == 0 || !config.brightnessLockEnabled
-                OutputFormatter.line(label: "Brightness:", value: brightnessOk ? "\(brightnessText) ✓" : "\(brightnessText) ✗")
+                let value = brightnessOk ? "\(brightnessText) ✓" : "\(brightnessText) ✗"
+                OutputFormatter.line(label: "Brightness:", value: OutputFormatter.statusValue(value, ok: brightnessOk))
             } else {
-                OutputFormatter.line(label: "Brightness:", value: "unknown")
+                OutputFormatter.line(label: "Brightness:", value: OutputFormatter.statusValue("unknown", ok: false))
             }
 
             if let volumeValue {
                 let volumeText = "\(volumeValue)%"
                 let volumeOk = (volumeValue == 0 || mutedValue == true) || !config.volumeLockEnabled
-                OutputFormatter.line(label: "Volume:", value: volumeOk ? "\(volumeText) ✓" : "\(volumeText) ✗")
+                let value = volumeOk ? "\(volumeText) ✓" : "\(volumeText) ✗"
+                OutputFormatter.line(label: "Volume:", value: OutputFormatter.statusValue(value, ok: volumeOk))
             } else {
-                OutputFormatter.line(label: "Volume:", value: "unknown")
+                OutputFormatter.line(label: "Volume:", value: OutputFormatter.statusValue("unknown", ok: false))
             }
         }
 
