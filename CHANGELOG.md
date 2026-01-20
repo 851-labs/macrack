@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.18 - 2026-01-19
+- Switch keyboard backlight control to CoreBrightness.
+
 ## 0.1.17 - 2026-01-19
 - Switch keyboard backlight control to HID event system APIs.
 

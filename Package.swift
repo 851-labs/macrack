@@ -18,6 +18,12 @@ let package = Package(
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 "Rainbow",
                 .product(name: "Logging", package: "swift-log")
+            ],
+            linkerSettings: [
+                .unsafeFlags([
+                    "-F/System/Library/PrivateFrameworks",
+                    "-framework", "CoreBrightness"
+                ])
             ]
         )
     ]
