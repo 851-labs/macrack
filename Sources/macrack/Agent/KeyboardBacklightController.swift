@@ -7,7 +7,10 @@ final class KeyboardBacklightController {
 
     func setBrightness(percent: Double) -> Bool {
         let clamped = max(0, min(100, percent)) / 100
-        let payload = String(format: "{\"KeyboardBacklightBrightness\":%.3f,\"KeyboardBacklightAuto\":0}", clamped)
+        let payload = String(
+            format: "{\"KeyboardBacklightBrightness\":%.3f,\"KeyboardBacklightBrightnessLevel\":0,\"KeyboardBacklightAuto\":0,\"KeyboardBacklightAutoBrightness\":0}",
+            clamped
+        )
         return runHidutilSet(payload: payload)
     }
 
