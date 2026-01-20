@@ -83,7 +83,7 @@ Defaults:
 The Launch Agent runs `macrack agent` and:
 
 - Spawns `caffeinate -s -d -i -u`
-- Enforces brightness, keyboard backlight, and volume every interval
+- Enforces brightness, keyboard backlight (CoreBrightness), and volume every interval
 - Pauses enforcement when user activity is detected
 - Reloads configuration on `SIGHUP`
 
