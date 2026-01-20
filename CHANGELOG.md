@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.17 - 2026-01-19
+- Switch keyboard backlight control to HID event system APIs.
+
 ## 0.1.16 - 2026-01-19
 - Expand keyboard backlight `hidutil` payload.
 
