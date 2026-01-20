@@ -1,7 +1,7 @@
 <div align="center">
   <img width="180" height="180" src="docs/screenshots/icon.png" alt="MacRack icon">
   <h1><b>MacRack</b></h1>
-  <p>Keep a Mac "server-ready" by preventing sleep, forcing zero brightness, muting volume, and disabling keyboard backlight.</p>
+  <p>Turn your MacBook into an always-on server.<br>No more accidental sleep, screen burn, or glowing keyboards at 3am.</p>
 </div>
 
 <div align="center">
