@@ -13,7 +13,7 @@ struct StatusCommand: ParsableCommand {
     func run() throws {
         OutputFormatter.header("MacRack Status")
 
-        let labels = ["Agent:", "Sleep:", "Network:", "Brightness:", "Keyboard Backlight:", "Volume:", "Uptime:"]
+        let labels = ["Agent:", "Sleep:", "Brightness:", "Keyboard Backlight:", "Volume:", "Network:", "Uptime:"]
         let width = max(12, labels.map { $0.count }.max() ?? 12)
 
         switch LaunchctlService.status() {
@@ -44,16 +44,6 @@ struct StatusCommand: ParsableCommand {
             }
         } else {
             OutputFormatter.line(label: "Sleep:", value: OutputFormatter.statusValue("unknown", ok: false), width: width)
-        }
-
-        if let network = NetworkStatus.current() {
-            if verbose {
-                OutputFormatter.line(label: "Network:", value: "\(network.port) (\(network.device))", width: width)
-            } else {
-                OutputFormatter.line(label: "Network:", value: network.port, width: width)
-            }
-        } else {
-            OutputFormatter.line(label: "Network:", value: OutputFormatter.statusValue("unknown", ok: false), width: width)
         }
 
         let brightnessValue = status?.brightnessPercent.map { Int($0.rounded()) }
@@ -95,6 +85,16 @@ struct StatusCommand: ParsableCommand {
             } else {
                 OutputFormatter.line(label: "Volume:", value: OutputFormatter.statusValue("unknown", ok: false), width: width)
             }
+        }
+
+        if let network = NetworkStatus.current() {
+            if verbose {
+                OutputFormatter.line(label: "Network:", value: "\(network.port) (\(network.device))", width: width)
+            } else {
+                OutputFormatter.line(label: "Network:", value: network.port, width: width)
+            }
+        } else {
+            OutputFormatter.line(label: "Network:", value: OutputFormatter.statusValue("unknown", ok: false), width: width)
         }
 
         if let startTime = status?.startTime {
