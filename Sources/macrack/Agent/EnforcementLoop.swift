@@ -14,6 +14,7 @@ final class MacrackAgent {
     private var reloadRequested = true
     private var lastPauseState: Bool?
     private var lastCaffeinatePid: Int32?
+    private var lastKeyboardBacklightPercent: Double?
 
     init(logger: Logger) {
         self.logger = logger
@@ -64,6 +65,11 @@ final class MacrackAgent {
 
             var currentBrightness = brightnessController?.currentBrightnessPercent()
             var currentKeyboardBacklight = keyboardBacklightController.currentBrightnessPercent()
+            if currentKeyboardBacklight == nil {
+                currentKeyboardBacklight = lastKeyboardBacklightPercent
+            } else {
+                lastKeyboardBacklightPercent = currentKeyboardBacklight
+            }
             var currentVolume = volumeController.currentVolume()
             var currentMuted = volumeController.isMuted()
 
@@ -92,10 +98,12 @@ final class MacrackAgent {
                         if currentLevel > 0.5, keyboardBacklightController.setBrightness(percent: 0) {
                             logger.info("Keyboard backlight set to 0% (was \(Int(currentLevel)))")
                             currentKeyboardBacklight = 0
+                            lastKeyboardBacklightPercent = 0
                         }
                     } else if keyboardBacklightController.setBrightness(percent: 0) {
                         logger.info("Keyboard backlight set to 0%")
                         currentKeyboardBacklight = 0
+                        lastKeyboardBacklightPercent = 0
                     }
                 }
             }

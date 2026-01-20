@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.15 - 2026-01-19
+- Switch keyboard backlight control to `hidutil`.
+
 ## 0.1.14 - 2026-01-19
 - Add keyboard backlight enforcement.
 
