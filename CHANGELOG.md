@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.1 - 2026-01-19
+- Add default route network status in `macrack status`.
+
 ## 1.0.0 - 2026-01-19
 - Stable release with brightness, keyboard backlight, volume, and sleep enforcement.
 
