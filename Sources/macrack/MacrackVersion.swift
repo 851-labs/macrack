@@ -1,3 +1,3 @@
 enum MacrackVersion {
-    static let current = "0.1.18"
+    static let current = "1.0.0"
 }

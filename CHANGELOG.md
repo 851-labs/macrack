@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.0 - 2026-01-19
+- Stable release with brightness, keyboard backlight, volume, and sleep enforcement.
+
 ## 0.1.18 - 2026-01-19
 - Switch keyboard backlight control to CoreBrightness.
 
