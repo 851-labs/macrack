@@ -16,6 +16,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install appdrop
+        run: |
+          brew install 851-labs/tap/appdrop || brew upgrade 851-labs/tap/appdrop || true
+
+      - name: Set up CI signing environment
+        env:
+          DEVELOPER_ID_CERT_P12: ${{ secrets.DEVELOPER_ID_CERT_P12 }}
+          DEVELOPER_ID_CERT_PASSWORD: ${{ secrets.DEVELOPER_ID_CERT_PASSWORD }}
+          DEVELOPER_ID_APPLICATION: ${{ secrets.DEVELOPER_ID_APPLICATION }}
+        run: |
+          appdrop setup-ci --keychain-only
+
       - name: Build universal binary
         run: |
           swift build -c release --arch arm64
