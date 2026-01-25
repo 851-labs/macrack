@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.4 - 2026-01-25
+- Add pre-built universal binary distribution (no longer requires Xcode to install).
+- Binary is now code-signed and notarized with Apple.
+
 ## 1.0.3 - 2026-01-25
 - Fix network status ordering in `macrack status`.
 
