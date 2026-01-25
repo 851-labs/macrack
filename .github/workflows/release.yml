@@ -19,8 +19,7 @@ jobs:
           set-safe-directory: false
 
       - name: Install appdrop
-        run: |
-          brew install 851-labs/tap/appdrop || brew upgrade 851-labs/tap/appdrop || true
+        run: brew install 851-labs/tap/appdrop || brew upgrade 851-labs/tap/appdrop
 
       - name: Set up CI
         env:
