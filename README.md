@@ -16,6 +16,10 @@
     <img src="https://img.shields.io/badge/Homebrew-851--labs%2Ftap-fbb040?logo=homebrew&logoColor=white&style=flat" alt="Homebrew tap">
   </a>
   <br>
+  <a href="https://github.com/851-labs/macrack/releases/latest">
+    <img src="https://img.shields.io/badge/Download-macOS-black?logo=apple&logoColor=white&style=flat" alt="Download macOS">
+  </a>
+  <img src="https://img.shields.io/github/downloads/851-labs/macrack/total?label=downloads&style=flat" alt="Downloads">
   <a href="https://deepwiki.com/851-labs/macrack">
     <img src="https://img.shields.io/badge/DeepWiki-Docs-4b32c3?style=flat" alt="DeepWiki">
   </a>
