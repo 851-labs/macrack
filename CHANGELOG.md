@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.3 - 2026-01-25
+- Fix network status ordering in `macrack status`.
+
+## 1.0.2 - 2026-01-20
+- Add network status to `macrack status`.
+
 ## 1.0.1 - 2026-01-19
 - Add default route network status in `macrack status`.
 
