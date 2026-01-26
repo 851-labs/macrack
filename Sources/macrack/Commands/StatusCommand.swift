@@ -85,8 +85,6 @@ struct StatusCommand: ParsableCommand {
     }
 
     private func outputHuman(agentStatus: LaunchctlState, status: AgentStatus?, config: Configuration, network: NetworkStatus?) throws {
-        OutputFormatter.header("MacRack Status")
-
         let labels = ["Agent:", "Sleep:", "Brightness:", "Keyboard Backlight:", "Volume:", "Network:", "Uptime:"]
         let width = max(12, labels.map { $0.count }.max() ?? 12)
 
