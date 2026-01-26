@@ -10,7 +10,7 @@ struct StatusCommand: ParsableCommand {
     @Flag(name: .shortAndLong, help: "Show detailed status information")
     var verbose = false
 
-    @Flag(name: .long, help: "Output as JSON")
+    @Flag(name: .shortAndLong, help: "Output as JSON")
     var json = false
 
     func run() throws {
