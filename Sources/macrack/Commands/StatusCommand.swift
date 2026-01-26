@@ -10,13 +10,87 @@ struct StatusCommand: ParsableCommand {
     @Flag(name: .shortAndLong, help: "Show detailed status information")
     var verbose = false
 
+    @Flag(name: .long, help: "Output as JSON")
+    var json = false
+
     func run() throws {
+        let agentStatus = LaunchctlService.status()
+        let status = StatusCacheStore.load()
+        let config = Configuration.load().config
+        let network = NetworkStatus.current()
+
+        if json {
+            try outputJSON(agentStatus: agentStatus, status: status, config: config, network: network)
+            return
+        }
+
+        try outputHuman(agentStatus: agentStatus, status: status, config: config, network: network)
+    }
+
+    private func outputJSON(agentStatus: LaunchctlState, status: AgentStatus?, config: Configuration, network: NetworkStatus?) throws {
+        let paused = status?.isPaused ?? false
+        let issues = hasIssues(status: status, config: config)
+
+        let isRunning: Bool
+        if case .running = agentStatus { isRunning = true } else { isRunning = false }
+
+        var result: [String: Any] = [
+            "agent": agentStatusString(agentStatus),
+            "paused": paused,
+            "ok": !issues && isRunning
+        ]
+
+        if let pid = status?.caffeinatePid {
+            result["caffeinatePid"] = pid
+        }
+
+        if let brightness = status?.brightnessPercent {
+            result["brightness"] = Int(brightness.rounded())
+        }
+
+        if let keyboard = status?.keyboardBacklightPercent {
+            result["keyboardBacklight"] = Int(keyboard.rounded())
+        }
+
+        if let volume = status?.volumePercent {
+            result["volume"] = volume
+        }
+
+        if let muted = status?.isMuted {
+            result["muted"] = muted
+        }
+
+        if let network {
+            result["network"] = ["port": network.port, "device": network.device]
+        }
+
+        if let startTime = status?.startTime {
+            result["uptimeSeconds"] = Int(Date().timeIntervalSince(startTime))
+        }
+
+        let jsonData = try JSONSerialization.data(withJSONObject: result, options: [.prettyPrinted, .sortedKeys])
+        print(String(data: jsonData, encoding: .utf8) ?? "{}")
+
+        if !isRunning || issues {
+            throw ExitCode.failure
+        }
+    }
+
+    private func agentStatusString(_ status: LaunchctlState) -> String {
+        switch status {
+        case .running: return "running"
+        case .notRunning: return "not_running"
+        case .error: return "error"
+        }
+    }
+
+    private func outputHuman(agentStatus: LaunchctlState, status: AgentStatus?, config: Configuration, network: NetworkStatus?) throws {
         OutputFormatter.header("MacRack Status")
 
         let labels = ["Agent:", "Sleep:", "Brightness:", "Keyboard Backlight:", "Volume:", "Network:", "Uptime:"]
         let width = max(12, labels.map { $0.count }.max() ?? 12)
 
-        switch LaunchctlService.status() {
+        switch agentStatus {
         case .notRunning:
             OutputFormatter.line(label: "Agent:", value: OutputFormatter.statusValue("not running ✗", ok: false), width: width)
             OutputFormatter.info("\nStart with: brew services start macrack")
