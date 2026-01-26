@@ -13,6 +13,7 @@ struct Macrack: ParsableCommand {
             VersionCommand.self,
             AgentCommand.self,
             HelpCommand.self
-        ]
+        ],
+        defaultSubcommand: StatusCommand.self
     )
 }
