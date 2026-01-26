@@ -11,8 +11,16 @@ struct Macrack: ParsableCommand {
               macrack config --interval 60     Set check interval
               macrack logs -f                  Follow logs
 
+            SERVICE MANAGEMENT:
+              brew services start macrack
+              brew services stop macrack
+              brew services restart macrack
+
             CONFIG FILE:
               ~/.config/macrack/config.json
+
+            DOCUMENTATION:
+              https://github.com/851-labs/macrack
             """,
         version: MacrackVersion.current,
         subcommands: [
@@ -20,8 +28,7 @@ struct Macrack: ParsableCommand {
             ConfigCommand.self,
             LogsCommand.self,
             VersionCommand.self,
-            AgentCommand.self,
-            HelpCommand.self
+            AgentCommand.self
         ],
         defaultSubcommand: StatusCommand.self
     )
